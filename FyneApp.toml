@@ -1,0 +1,18 @@
+Website = "https://github.com/robke96/ffbeast-linux"
+
+[Details]
+Icon = "assets/icon.png"
+Name = "FFBeastLinux"
+ID = "FFBeastLinux"
+Version = "0.1.0"
+Build = 0
+
+[Release]
+BuildName = "ffbeast-linux"
+Description = ""
+
+[LinuxAndBSD]
+GenericName = "FFBeastLinux"
+Categories = ["Utility"]
+Comment = ""
+Keywords = ["FFBeastLinux"]

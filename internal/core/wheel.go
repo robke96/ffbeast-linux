@@ -1,6 +1,7 @@
-package wheel
+package core
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/sstallion/go-hid"
@@ -103,15 +104,13 @@ type DirectControl struct {
 	ForceDrop     uint8
 }
 
-// Wheel wrapper
 type Wheel struct {
 	dev *hid.Device
 }
 
-// New returns a new wrapper
-func New() *Wheel { return &Wheel{} }
+func NewWheel() *Wheel { return &Wheel{} }
 
-func (w *Wheel) Connect() int {
+func (w *Wheel) Connect() error {
 	var path string
 
 	err := hid.Enumerate(USB_VID, WHEEL_PID_FS, func(info *hid.DeviceInfo) error {
@@ -119,24 +118,25 @@ func (w *Wheel) Connect() int {
 			path = info.Path
 			return hid.ErrTimeout
 		}
+		fmt.Println("aaa")
 		return nil
 	})
 
 	if err != nil && err != hid.ErrTimeout {
-		return 0
+		return err
 	}
 
 	if path == "" {
-		return 0
+		return errors.New("Path empty, no device found")
 	}
 
 	device, err := hid.OpenPath(path)
 	if err != nil {
-		return 0
+		return err
 	}
-
+	fmt.Println("Connected!")
 	w.dev = device
-	return 1
+	return nil
 }
 
 func (w *Wheel) sendCommand(command byte) int {
