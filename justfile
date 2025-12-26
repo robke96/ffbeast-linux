@@ -1,4 +1,7 @@
 #
+dev:
+    go run main.go
+
 release:
     fyne package -os linux --release
 

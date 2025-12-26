@@ -1,7 +1,16 @@
 package ui
 
-import "fyne.io/fyne/v2/widget"
+import (
+	"fmt"
 
-func EffectsPage() *widget.Label {
-	return widget.NewLabel("Effect page")
+	"fyne.io/fyne/v2/widget"
+)
+
+func EffectsPage() *widget.Card {
+	button := widget.NewButton("Click", func() {
+		fmt.Println("hi")
+	})
+
+	card := widget.NewCard("Common", "", button)
+	return card
 }

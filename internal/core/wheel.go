@@ -118,7 +118,6 @@ func (w *Wheel) Connect() error {
 			path = info.Path
 			return hid.ErrTimeout
 		}
-		fmt.Println("aaa")
 		return nil
 	})
 
@@ -132,14 +131,17 @@ func (w *Wheel) Connect() error {
 
 	device, err := hid.OpenPath(path)
 	if err != nil {
+		InstallSudoUdev()
 		return err
 	}
-	fmt.Println("Connected!")
+
 	w.dev = device
+	fmt.Println("Connected!")
 	return nil
 }
 
 func (w *Wheel) sendCommand(command byte) int {
+	fmt.Println(w.dev)
 	if w.dev == nil {
 		fmt.Println("device not connected")
 		return 0

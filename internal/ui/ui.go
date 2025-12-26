@@ -17,6 +17,7 @@ func NewUI(w fyne.Window, state *core.AppState) {
 	err := myWheel.Connect()
 	if err == nil {
 		state.DeviceConnected = true
+		state.Wheel = myWheel
 		w.SetContent(ConnectedPage(state))
 		return
 	}
@@ -38,6 +39,7 @@ func NewUI(w fyne.Window, state *core.AppState) {
 
 		if err == nil {
 			state.DeviceConnected = true
+			state.Wheel = myWheel
 			state.CurrentPage = "effects"
 
 			fyne.Do(func() {
