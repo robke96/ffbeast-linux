@@ -4,24 +4,25 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
-	"github.com/robke96/ffbeast-linux/internal/core"
+	"github.com/robke96/ffbeast-linux/internal/device"
+	"github.com/robke96/ffbeast-linux/internal/ui/pages"
 )
 
-func bottomButtons(state *core.AppState) fyne.CanvasObject {
+func bottomButtons(dev *device.Device) fyne.CanvasObject {
 	resetWheelCenterBtn := widget.NewButton("Reset wheel center", func() {
-		state.Wheel.ResetCenter()
+		dev.Wheel.ResetCenter()
 	})
 
 	saveRebootBtn := widget.NewButton("Save and reboot", func() {
-		state.Wheel.SaveAndReboot()
+		dev.Wheel.SaveAndReboot()
 	})
 
 	switchDFUmodeBtn := widget.NewButton("Switch to DFU mode", func() {
-		state.Wheel.SwitchToDFU()
+		dev.Wheel.SwitchToDFU()
 	})
 
 	rebootControllerBtn := widget.NewButton("Reboot controller", func() {
-		state.Wheel.RebootController()
+		dev.Wheel.RebootController()
 	})
 
 	column := container.NewVBox(
@@ -33,17 +34,17 @@ func bottomButtons(state *core.AppState) fyne.CanvasObject {
 	return column
 }
 
-func ConnectedPage(state *core.AppState) *fyne.Container {
+func ConnectedPage(dev *device.Device) *fyne.Container {
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Effects", EffectsPage()),
-		container.NewTabItem("Periphery", PeripheryPage()),
-		container.NewTabItem("Controller", ControllerPage()),
-		container.NewTabItem("License", LicensePage()),
+		container.NewTabItem("Effects", pages.EffectsPage(dev)),
+		container.NewTabItem("Periphery", pages.PeripheryPage(dev)),
+		container.NewTabItem("Controller", pages.ControllerPage(dev)),
+		container.NewTabItem("License", pages.LicensePage()),
 	)
 
 	content := container.NewBorder(
 		nil,
-		bottomButtons(state),
+		bottomButtons(dev),
 		nil,
 		nil,
 		tabs,

@@ -7,18 +7,19 @@ import (
 
 	"fyne.io/fyne/v2"
 	"github.com/avast/retry-go"
-	"github.com/robke96/ffbeast-linux/internal/core"
+	"github.com/robke96/ffbeast-linux/internal/device"
+	"github.com/robke96/ffbeast-linux/internal/device/wheel"
 )
 
-func NewUI(w fyne.Window, state *core.AppState) {
+func NewUI(w fyne.Window, dev *device.Device) {
 	w.Resize(fyne.NewSize(600, 800))
 
-	myWheel := core.NewWheel()
+	myWheel := wheel.NewWheel()
 	err := myWheel.Connect()
 	if err == nil {
-		state.DeviceConnected = true
-		state.Wheel = myWheel
-		w.SetContent(ConnectedPage(state))
+		dev.Connected = true
+		dev.Wheel = myWheel
+		w.SetContent(ConnectedPage(dev))
 		return
 	}
 
@@ -38,13 +39,12 @@ func NewUI(w fyne.Window, state *core.AppState) {
 		)
 
 		if err == nil {
-			state.DeviceConnected = true
-			state.Wheel = myWheel
-			state.CurrentPage = "effects"
+			dev.Connected = true
+			dev.Wheel = myWheel
 
 			fyne.Do(func() {
-				w.Canvas().Refresh(ConnectedPage(state))
-				w.SetContent(ConnectedPage(state))
+				w.Canvas().Refresh(ConnectedPage(dev))
+				w.SetContent(ConnectedPage(dev))
 			})
 		} else {
 			fmt.Println("failed")
