@@ -1,7 +1,16 @@
 package ui
 
-import "fyne.io/fyne/v2/widget"
+import (
+	"image/color"
 
-func WaitingPage() *widget.Label {
-	return widget.NewLabel("Waiting for device..")
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+)
+
+func WaitingPage() *fyne.Container {
+	text := canvas.NewText("Waiting for device...", color.White)
+	text.TextSize = 16
+
+	return container.NewCenter(text)
 }
