@@ -3,6 +3,7 @@ package wheel
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/robke96/ffbeast-linux/internal/device/udev"
 	"github.com/sstallion/go-hid"
@@ -38,4 +39,19 @@ func (w *Wheel) Connect() error {
 	w.dev = device
 	fmt.Println("Connected!")
 	return nil
+}
+
+func (w *Wheel) IsConnected() bool {
+	if w.dev == nil {
+		fmt.Println("device not connected")
+		return false
+	}
+	ping := make([]byte, 1)
+
+	_, err := w.dev.ReadWithTimeout(ping, 100*time.Millisecond)
+	if err != nil {
+		return false
+	}
+
+	return true
 }

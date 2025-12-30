@@ -4,7 +4,6 @@ go 1.25.5
 
 require (
 	fyne.io/fyne/v2 v2.7.1
-	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/sstallion/go-hid v0.15.0
 )
 

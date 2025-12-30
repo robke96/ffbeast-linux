@@ -1,12 +1,10 @@
 package ui
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
 	"fyne.io/fyne/v2"
-	"github.com/avast/retry-go"
 	"github.com/robke96/ffbeast-linux/internal/device"
 	"github.com/robke96/ffbeast-linux/internal/device/wheel"
 )
@@ -14,40 +12,43 @@ import (
 func NewUI(w fyne.Window, dev *device.Device) {
 	w.Resize(fyne.NewSize(600, 800))
 
+	// first init when app starts up
 	myWheel := wheel.NewWheel()
 	err := myWheel.Connect()
+
 	if err == nil {
 		dev.Connected = true
 		dev.Wheel = myWheel
 		w.SetContent(ConnectedPage(dev))
-		return
+	} else {
+		w.SetContent(WaitingPage())
 	}
 
-	w.SetContent(WaitingPage())
+	// auto reconnect ping logic
 	go func() {
-		err := retry.Do(func() error {
-			err := myWheel.Connect()
-			if err != nil {
-				fmt.Printf("Connect failed - %s\n", err)
-				return errors.New("connection failed")
+		for {
+			if !dev.Connected {
+				err := myWheel.Connect()
+
+				if err == nil {
+					dev.Connected = true
+					dev.Wheel = myWheel
+					fmt.Println("connected")
+					fyne.Do(func() {
+						w.SetContent(ConnectedPage(dev))
+					})
+				}
+			} else {
+				if !myWheel.IsConnected() {
+					dev.Connected = false
+					dev.Wheel = nil
+					fyne.Do(func() {
+						w.SetContent(WaitingPage())
+					})
+				}
 			}
 
-			return nil
-		},
-			retry.Attempts(15),
-			retry.Delay(3*time.Second),
-		)
-
-		if err == nil {
-			dev.Connected = true
-			dev.Wheel = myWheel
-
-			fyne.Do(func() {
-				w.Canvas().Refresh(ConnectedPage(dev))
-				w.SetContent(ConnectedPage(dev))
-			})
-		} else {
-			fmt.Println("failed")
+			time.Sleep(1 * time.Second)
 		}
 	}()
 }
