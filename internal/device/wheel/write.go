@@ -8,7 +8,6 @@ import (
 )
 
 func (w *Wheel) sendCommand(command byte) int {
-	fmt.Println(w.dev)
 	if w.dev == nil {
 		fmt.Println("device not connected")
 		return 0

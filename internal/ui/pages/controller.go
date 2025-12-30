@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"fmt"
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -26,7 +25,6 @@ func BoolToInt8(b bool) int8 {
 
 func ControllerPage(dev *device.Device) *fyne.Container {
 	controlData := dev.Wheel.ReadHardwareSettings()
-	fmt.Println(controlData.ForceEnabled)
 
 	checkEnableForces := components.CheckBox(
 		"Enable forces (Require reboot)",

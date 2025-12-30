@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -33,7 +32,7 @@ func NewUI(w fyne.Window, dev *device.Device) {
 				if err == nil {
 					dev.Connected = true
 					dev.Wheel = myWheel
-					fmt.Println("connected")
+
 					fyne.Do(func() {
 						w.SetContent(ConnectedPage(dev))
 					})
