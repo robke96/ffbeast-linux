@@ -88,8 +88,8 @@ type FirmwareVersion struct {
 
 type FirmwareLicence struct {
 	FirmwareVersion FirmwareVersion
-	SerialKey       uint32
-	DeviceId        uint32
+	SerialKey       [3]uint32
+	DeviceId        [3]uint32
 	IsRegistered    byte // 0 or 1 acts as boolean flag
 	Padding         [35]byte
 }

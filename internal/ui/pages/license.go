@@ -11,14 +11,15 @@ import (
 	"github.com/robke96/ffbeast-linux/internal/device"
 )
 
+func arrayToHex(arr [3]uint32) string {
+	return fmt.Sprintf("%08X-%08X-%08X", arr[0], arr[1], arr[2])
+}
+
 func LicensePage(dev *device.Device) *fyne.Container {
 	info := widget.NewLabel("This app is only for basic version at this moment.")
-
 	licenceData := dev.Wheel.ReadFirmwareLicence()
 
-	// TO-DO: not reading, int -> hex
-	deviceId := fmt.Sprintf("%x", licenceData.DeviceId)
-
+	deviceId := arrayToHex(licenceData.DeviceId)
 	deviceInput := widget.NewEntry()
 	deviceInput.SetText(deviceId)
 	deviceInput.Disable()
@@ -30,7 +31,10 @@ func LicensePage(dev *device.Device) *fyne.Container {
 		deviceInput,
 	)
 
+	serialId := arrayToHex(licenceData.SerialKey)
 	serialInput := widget.NewEntry()
+	serialInput.SetText(serialId)
+
 	serialBox := container.NewBorder(
 		nil, nil,
 		canvas.NewText("Serial Key", color.White),
