@@ -52,3 +52,14 @@ func (w *Wheel) ReadHardwareSettings() *HardwareSettings {
 	}
 	return hardware
 }
+
+func (w *Wheel) ReadGPIOSettings() *GpioExtensionSettings {
+	data := &GpioExtensionSettings{}
+	err := w.ReadData(REPORT_GPIO_SETTINGS_FEATURE, data)
+	if err != nil {
+		fmt.Println("error reading gpio")
+		return nil
+	}
+
+	return data
+}

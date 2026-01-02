@@ -3,30 +3,30 @@ package pages
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
 	"github.com/robke96/ffbeast-linux/internal/device"
 	"github.com/robke96/ffbeast-linux/internal/ui/components"
 )
 
 func PeripheryPage(dev *device.Device) *fyne.Container {
+	gpioData := dev.Wheel.ReadGPIOSettings()
+	resetCenterZ0Value := gpioData.PinMode[8]
+
 	checkbPinZ0 := components.CheckBox(
 		"Enable reset center button on pin Z0 (Require reboot)",
-		false,
+		resetCenterZ0Value == 7,
 		func(b bool) {
 			var val int8
 			if b {
 				val = 1
 			} else {
-				val = -1
+				val = 0
 			}
 
 			dev.Wheel.SetResetCenterOnZ0(val)
 		},
 	)
-	checkbPinZ0.Disable()
 
 	pageContainer := container.NewVBox(
-		widget.NewLabel("CURRENTLY NOT WORKING"),
 		checkbPinZ0,
 	)
 	return pageContainer
