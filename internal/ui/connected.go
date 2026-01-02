@@ -39,7 +39,7 @@ func ConnectedPage(dev *device.Device) *fyne.Container {
 		container.NewTabItem("Effects", pages.EffectsPage(dev)),
 		container.NewTabItem("Periphery", pages.PeripheryPage(dev)),
 		container.NewTabItem("Controller", pages.ControllerPage(dev)),
-		container.NewTabItem("License", pages.LicensePage()),
+		container.NewTabItem("License", pages.LicensePage(dev)),
 	)
 
 	content := container.NewBorder(

@@ -63,3 +63,14 @@ func (w *Wheel) ReadGPIOSettings() *GpioExtensionSettings {
 
 	return data
 }
+
+func (w *Wheel) ReadFirmwareLicence() *FirmwareLicence {
+	data := &FirmwareLicence{}
+	err := w.ReadData(REPORT_FIRMWARE_LICENCE_FEATURE, data)
+	if err != nil {
+		fmt.Println("error reading licence feature")
+		return nil
+	}
+
+	return data
+}

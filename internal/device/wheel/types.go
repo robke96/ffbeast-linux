@@ -13,6 +13,8 @@ const (
 	REPORT_HARDWARE_SETTINGS_FEATURE = 0x21
 	REPORT_GPIO_SETTINGS_FEATURE     = 0xA1
 	REPORT_ADC_SETTINGS_FEATURE      = 0xA2
+	REPORT_FIRMWARE_LICENCE_FEATURE  = 0x25
+	REPORT_DEVICE_GAIN               = 0x1D
 
 	DATA_COMMAND_REBOOT        = 0x01
 	DATA_COMMAND_SAVE_SETTINGS = 0x02
@@ -84,9 +86,17 @@ type FirmwareVersion struct {
 	ReleasePatch byte
 }
 
+type FirmwareLicence struct {
+	FirmwareVersion FirmwareVersion
+	SerialKey       uint32
+	DeviceId        uint32
+	IsRegistered    byte // 0 or 1 acts as boolean flag
+	Padding         [35]byte
+}
+
 type DeviceState struct {
 	FirmwareVersion FirmwareVersion
-	IsRegistered    byte
+	IsRegistered    byte // 0 or 1 acts as boolean flag
 	Position        int16
 	Torque          int16
 	Padding         [55]byte
