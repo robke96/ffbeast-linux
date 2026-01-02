@@ -30,9 +30,24 @@ func Slider(rangeValue uint16, title string, maxSlider float64, onChange func(fl
 	}
 
 	input.OnChanged = func(s string) {
-		if v, err := strconv.ParseFloat(s, 64); err == nil {
-			slider.SetValue(v)
+		n, err := strconv.Atoi(s)
+		if err != nil {
+			input.SetText("0")
+			return
 		}
+
+		if n < 0 || n > int(maxSlider) {
+			// out of range: revert or clamp
+			if n < 0 {
+				input.SetText("0")
+			} else {
+				input.SetText(fmt.Sprintf("%d", int(maxSlider)))
+			}
+			return
+		}
+
+		floatNum := float64(n)
+		slider.SetValue(floatNum)
 	}
 
 	slider.OnChangeEnded = func(v float64) {
