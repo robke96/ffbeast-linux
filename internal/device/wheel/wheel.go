@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/robke96/ffbeast-linux/internal/device/udev"
 	"github.com/sstallion/go-hid"
 )
 
@@ -32,7 +31,6 @@ func (w *Wheel) Connect() error {
 
 	device, err := hid.OpenPath(path)
 	if err != nil {
-		udev.InstallSudoUdev()
 		return err
 	}
 

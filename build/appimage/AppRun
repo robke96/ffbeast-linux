@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
-HERE="$(dirname "$(readlink -f "$0")")"
-BIN="$HERE/usr/local/bin"
+set -e
 
-# start ffbeast
+BIN="$(dirname "$(readlink -f "$0")")/usr/local/bin"
+RULE_FILE="/etc/udev/rules.d/99-ffbeast-hid.rules"
+RULE='SUBSYSTEM=="hidraw", ATTRS{idVendor}=="045b", ATTRS{idProduct}=="59d7", MODE="0666"'
+
+# install udev rule if missing
+if ! grep -Fxq "$RULE" "$RULE_FILE" 2>/dev/null; then
+    if command -v pkexec >/dev/null; then
+        pkexec /bin/sh -c "
+            printf '%s\n' '$RULE' > '$RULE_FILE'
+            udevadm control --reload-rules
+            udevadm trigger --subsystem-match=hidraw
+        " 
+    else 
+    # if system doesnt have pkexec use run0
+        run0 /bin/sh -c "
+            printf '%s\n' '$RULE' > '$RULE_FILE'
+            udevadm control --reload-rules
+            udevadm trigger --subsystem-match=hidraw
+        " 
+    fi
+fi
+
+# launch ffbeast
 exec "$BIN"/* "$@"

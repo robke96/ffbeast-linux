@@ -44,4 +44,4 @@ NO_STRIP=true ./linuxdeploy \
     -i "$APPDIR/usr/local/share/pixmaps/$appid.png"
 
 # cleanup
-rm -rf "$SOURCEDIR" "$APPDIR" fynemeta linuxdeploy
+rm -rf "$SOURCEDIR" "$APPDIR" fynemeta linuxdeploy "$appname.tar.xz"

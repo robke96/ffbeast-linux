@@ -3,16 +3,15 @@ Website = "https://github.com/robke96/ffbeast-linux"
 [Details]
 Icon = "assets/icon.png"
 Name = "FFBeastLinux"
-ID = "FFBeastLinux"
+ID = "com.example.ffbeast"
 Version = "0.1.0"
 Build = 0
 
 [Release]
 BuildName = "ffbeast-linux"
-Description = ""
+Description = "DIY FFB Wheel Configuration App"
 
 [LinuxAndBSD]
 GenericName = "FFBeastLinux"
 Categories = ["Utility"]
-Comment = ""
 Keywords = ["FFBeastLinux"]

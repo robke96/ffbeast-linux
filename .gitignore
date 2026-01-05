@@ -1,3 +1,4 @@
 ffbeast-linux
-FFBeastLinux.tar.xz
+*.tar.xz
+*.AppImage
 build/dist
