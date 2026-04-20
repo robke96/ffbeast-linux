@@ -3,6 +3,7 @@ package ui
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/robke96/ffbeast-linux/internal/device"
 	"github.com/robke96/ffbeast-linux/internal/ui/pages"
@@ -34,7 +35,21 @@ func bottomButtons(dev *device.Device) fyne.CanvasObject {
 	return column
 }
 
-func ConnectedPage(dev *device.Device, onLicenseUpdated func()) *fyne.Container {
+func tabsWithTopRightIcon(tabs fyne.CanvasObject, topRight fyne.CanvasObject) fyne.CanvasObject {
+	if topRight == nil {
+		return tabs
+	}
+
+	overlayTop := container.NewHBox(
+		layout.NewSpacer(),
+		container.NewPadded(topRight),
+	)
+	overlay := container.NewBorder(overlayTop, nil, nil, nil)
+
+	return container.NewStack(tabs, overlay)
+}
+
+func ConnectedPage(dev *device.Device, onLicenseUpdated func(), topRight fyne.CanvasObject) *fyne.Container {
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Effects", pages.EffectsPage(dev)),
 		container.NewTabItem("Periphery", pages.PeripheryPage(dev)),
@@ -47,7 +62,7 @@ func ConnectedPage(dev *device.Device, onLicenseUpdated func()) *fyne.Container 
 		bottomButtons(dev),
 		nil,
 		nil,
-		tabs,
+		tabsWithTopRightIcon(tabs, topRight),
 	)
 
 	return content

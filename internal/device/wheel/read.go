@@ -75,6 +75,42 @@ func (w *Wheel) ReadADCSettings() *AdcExtensionSettings {
 	return data
 }
 
+func (w *Wheel) ReadState() *DeviceState {
+	if w.dev == nil {
+		fmt.Println("device not connected")
+		return nil
+	}
+
+	report := make([]byte, REPORT_LEN)
+	result, err := w.dev.ReadWithTimeout(report, 10)
+	if err != nil || result <= 0 {
+		return nil
+	}
+
+	var payload []byte
+	switch {
+	case result >= REPORT_LEN:
+		payload = report[1:REPORT_LEN]
+	case result >= REPORT_LEN-1:
+		payload = report[:REPORT_LEN-1]
+	default:
+		return nil
+	}
+
+	state := &DeviceState{}
+	err = binary.Read(
+		bytes.NewReader(payload),
+		binary.LittleEndian,
+		state,
+	)
+	if err != nil {
+		fmt.Println("error reading state")
+		return nil
+	}
+
+	return state
+}
+
 func (w *Wheel) ReadFirmwareLicence() *FirmwareLicence {
 	data := &FirmwareLicence{}
 	err := w.ReadData(REPORT_FIRMWARE_LICENCE_FEATURE, data)
