@@ -8,7 +8,8 @@ Linux version of the FFBeast wheel configuration tool. Rewritten to work nativel
 
 No installation required - just download appimage and run it.
 
-[![Download Latest Release](https://img.shields.io/github/downloads/robke96/ffbeast-linux/v0.1.0/%20FFBeastLinux-x86_64.AppImage%20?displayAssetName=true&style=for-the-badge&label=Download%20AppImage&color=%231DB954)](https://github.com/robke96/ffbeast-linux/releases/download/v0.1.0/FFBeastLinux-x86_64.AppImage)
+[![Download Latest Release](https://img.shields.io/badge/Download-Latest%20AppImage-1DB954?style=for-the-badge)](https://github.com/robke96/ffbeast-linux/releases/latest/download/FFBeastLinux-x86_64.AppImage)
+
 
 ## Alternatives
 If you run into issues or lack of features:
