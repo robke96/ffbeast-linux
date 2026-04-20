@@ -64,6 +64,17 @@ func (w *Wheel) ReadGPIOSettings() *GpioExtensionSettings {
 	return data
 }
 
+func (w *Wheel) ReadADCSettings() *AdcExtensionSettings {
+	data := &AdcExtensionSettings{}
+	err := w.ReadData(REPORT_ADC_SETTINGS_FEATURE, data)
+	if err != nil {
+		fmt.Println("error reading adc")
+		return nil
+	}
+
+	return data
+}
+
 func (w *Wheel) ReadFirmwareLicence() *FirmwareLicence {
 	data := &FirmwareLicence{}
 	err := w.ReadData(REPORT_FIRMWARE_LICENCE_FEATURE, data)

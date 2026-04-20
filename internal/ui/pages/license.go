@@ -15,13 +15,11 @@ func arrayToHex(arr [3]uint32) string {
 	return fmt.Sprintf("%08X-%08X-%08X", arr[0], arr[1], arr[2])
 }
 
-func LicensePage(dev *device.Device) *fyne.Container {
-	info := widget.NewLabel("This app is only for basic version at this moment.")
-	licenceData := dev.Wheel.ReadFirmwareLicence()
+func LicensePage(dev *device.Device, onLicenseUpdated func()) *fyne.Container {
+	info := widget.NewLabel("")
+	status := widget.NewLabel("")
 
-	deviceId := arrayToHex(licenceData.DeviceId)
 	deviceInput := widget.NewEntry()
-	deviceInput.SetText(deviceId)
 	deviceInput.Disable()
 
 	deviceBox := container.NewBorder(
@@ -31,27 +29,82 @@ func LicensePage(dev *device.Device) *fyne.Container {
 		deviceInput,
 	)
 
-	serialId := arrayToHex(licenceData.SerialKey)
-	serialInput := widget.NewEntry()
-	serialInput.SetText(serialId)
+	var isRegistered bool
 
-	serialBox := container.NewBorder(
-		nil, nil,
-		canvas.NewText("Serial Key", color.White),
-		nil,
-		serialInput,
-	)
+	actionBtn := widget.NewButton("Activate", nil)
 
-	activateBtn := widget.NewButton("Activate", func() {
-		// for now nothing
-	})
-	activateBtn.Disable()
+	refresh := func(message string) {
+		if dev == nil || dev.Wheel == nil {
+			deviceInput.SetText("")
+			info.SetText("Device not connected.")
+			actionBtn.SetText("Activate")
+			actionBtn.Disable()
+			status.SetText(message)
+			return
+		}
+
+		licenceData := dev.Wheel.ReadFirmwareLicence()
+		if licenceData == nil {
+			deviceInput.SetText("")
+			info.SetText("Failed to read license data from device.")
+			actionBtn.SetText("Activate")
+			actionBtn.Disable()
+			status.SetText(message)
+			return
+		}
+
+		deviceInput.SetText(arrayToHex(licenceData.DeviceId))
+		isRegistered = licenceData.IsRegistered != 0
+		if isRegistered {
+			info.SetText("PRO license is active on this device.")
+			actionBtn.SetText("Deactivate")
+		} else {
+			info.SetText("Device is not PRO licensed.")
+			actionBtn.SetText("Activate")
+		}
+		actionBtn.Enable()
+		status.SetText(message)
+
+		if onLicenseUpdated != nil {
+			onLicenseUpdated()
+		}
+	}
+
+	actionBtn.OnTapped = func() {
+		if dev == nil || dev.Wheel == nil {
+			refresh("Device not connected.")
+			return
+		}
+
+		wasRegistered := isRegistered
+		actionBtn.Disable()
+		status.SetText("Applying license change...")
+
+		var err error
+		if wasRegistered {
+			err = dev.Wheel.DeactivateLicence()
+		} else {
+			err = dev.Wheel.ActivateLicence()
+		}
+		if err != nil {
+			refresh("License operation failed: " + err.Error())
+			return
+		}
+
+		if wasRegistered {
+			refresh("License deactivated.")
+			return
+		}
+		refresh("License activated.")
+	}
+
+	refresh("")
 
 	page := container.NewVBox(
 		info,
 		deviceBox,
-		serialBox,
-		activateBtn,
+		actionBtn,
+		status,
 	)
 	return page
 }

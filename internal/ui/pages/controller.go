@@ -25,6 +25,8 @@ func BoolToInt8(b bool) int8 {
 
 func ControllerPage(dev *device.Device) *fyne.Container {
 	controlData := dev.Wheel.ReadHardwareSettings()
+	licenceData := dev.Wheel.ReadFirmwareLicence()
+	isPro := licenceData != nil && licenceData.IsRegistered != 0
 
 	checkEnableForces := components.CheckBox(
 		"Enable forces (Require reboot)",
@@ -109,6 +111,27 @@ func ControllerPage(dev *device.Device) *fyne.Container {
 		},
 	)
 
+	speedSampleBufferSize := components.Input(
+		uint16(controlData.SpeedBufferSize),
+		"Speed sample buffer size",
+		func(s string) {
+			num, err := strconv.ParseUint(s, 10, 8)
+			if err != nil {
+				return
+			}
+			dev.Wheel.SetSpeedSampleBufferSize(uint8(num))
+		},
+	)
+
+	positionSmoothing := components.Slider(
+		uint16(controlData.PositionSmoothing),
+		"Position smoothing (%)",
+		100,
+		func(f float64) {
+			dev.Wheel.SetPositionSmoothing(uint8(f))
+		},
+	)
+
 	calMagnitude := components.Slider(
 		uint16(controlData.CalibrationMagnitude),
 		"Calibration magnitude (%)",
@@ -136,7 +159,7 @@ func ControllerPage(dev *device.Device) *fyne.Container {
 		},
 	)
 
-	pageContainer := container.NewVBox(
+	items := []fyne.CanvasObject{
 		checkEnableForces,
 		checkInvertJoy,
 		checkInvertForce,
@@ -149,6 +172,12 @@ func ControllerPage(dev *device.Device) *fyne.Container {
 		calMagnitude,
 		calSpeed,
 		brakingLimit,
-	)
+	}
+
+	if isPro {
+		items = append(items, speedSampleBufferSize, positionSmoothing)
+	}
+
+	pageContainer := container.NewVBox(items...)
 	return pageContainer
 }

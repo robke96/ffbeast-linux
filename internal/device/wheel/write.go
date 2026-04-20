@@ -120,6 +120,46 @@ func (w *Wheel) SetStaticDampening(value uint16) error {
 	return err
 }
 
+func (w *Wheel) SetIntegratedSpringStrength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_INTEGRATED_SPRING_STRENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSoftStopStrength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SOFT_STOP_STRENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSoftStopRange(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SOFT_STOP_RANGE),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSoftStopDampening(value uint16) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SOFT_STOP_DAMPENING_STRENGTH),
+		0,
+		value,
+		"uint16_t",
+	)
+	return err
+}
+
 func (w *Wheel) SetDirectXConstantDirection(value int8) error {
 	_, err := w.SendSettingReport(
 		int(SETTINGS_FIELD_DIRECT_X_CONSTANT_DIRECTION),
@@ -130,12 +170,172 @@ func (w *Wheel) SetDirectXConstantDirection(value int8) error {
 	return err
 }
 
+func (w *Wheel) SetDirectXSpringStrength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_DIRECT_X_SPRING_STRENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetDirectXConstantStrength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_DIRECT_X_CONSTANT_STRENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetDirectXPeriodicStrength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_DIRECT_X_PERIODIC_STRENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
 func (w *Wheel) SetResetCenterOnZ0(value int8) error {
 	_, err := w.SendSettingReport(
 		int(SETTINGS_FIELD_RESET_CENTER_ON_Z0),
 		0,
 		value,
 		"int8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetPinMode(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_PIN_MODE),
+		int(index),
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetButtonMode(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_BUTTON_MODE),
+		int(index),
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetExtensionMode(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_EXTENSION_MODE),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSpiMode(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SPI_MODE),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSpiLatchMode(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SPI_LATCH_MODE),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSpiLatchDelay(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SPI_LATCH_DELAY),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSpiClkPulseLength(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SPI_CLK_PULSE_LENGTH),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcMinDeadZone(index uint8, value uint16) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_MIN_DEAD_ZONE),
+		int(index),
+		value,
+		"uint16_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcMaxDeadZone(index uint8, value uint16) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_MAX_DEAD_ZONE),
+		int(index),
+		value,
+		"uint16_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcSmoothing(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_SMOOTHING),
+		int(index),
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcToButtonLow(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_TO_BUTTON_LOW),
+		int(index),
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcToButtonHigh(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_TO_BUTTON_HIGH),
+		int(index),
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetAdcInvert(index uint8, value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_ADC_INVERT),
+		int(index),
+		value,
+		"uint8_t",
 	)
 	return err
 }
@@ -183,6 +383,26 @@ func (w *Wheel) SetIGain(value uint16) error {
 func (w *Wheel) SetPowerLimit(value byte) error {
 	_, err := w.SendSettingReport(
 		int(SETTINGS_FIELD_POWER_LIMIT),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetSpeedSampleBufferSize(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_SPEED_BUFFER_SIZE),
+		0,
+		value,
+		"uint8_t",
+	)
+	return err
+}
+
+func (w *Wheel) SetPositionSmoothing(value uint8) error {
+	_, err := w.SendSettingReport(
+		int(SETTINGS_FIELD_POSITION_SMOOTHING),
 		0,
 		value,
 		"uint8_t",

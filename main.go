@@ -18,7 +18,7 @@ func main() {
 	// force dark theme for now, in future todo: rely on system default?
 	a.Settings().SetTheme(&forcedVariant{Theme: theme.DefaultTheme(), variant: theme.VariantDark})
 
-	w := a.NewWindow("FFBeastLinux")
+	w := a.NewWindow(ui.BaseWindowTitle)
 
 	dev := device.NewDevice()
 	ui.NewUI(w, dev)

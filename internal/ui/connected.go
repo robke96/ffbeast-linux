@@ -34,12 +34,12 @@ func bottomButtons(dev *device.Device) fyne.CanvasObject {
 	return column
 }
 
-func ConnectedPage(dev *device.Device) *fyne.Container {
+func ConnectedPage(dev *device.Device, onLicenseUpdated func()) *fyne.Container {
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Effects", pages.EffectsPage(dev)),
 		container.NewTabItem("Periphery", pages.PeripheryPage(dev)),
 		container.NewTabItem("Controller", pages.ControllerPage(dev)),
-		container.NewTabItem("License", pages.LicensePage(dev)),
+		container.NewTabItem("License", pages.LicensePage(dev, onLicenseUpdated)),
 	)
 
 	content := container.NewBorder(

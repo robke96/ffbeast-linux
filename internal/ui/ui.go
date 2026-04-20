@@ -18,8 +18,12 @@ func NewUI(w fyne.Window, dev *device.Device) {
 	if err == nil {
 		dev.Connected = true
 		dev.Wheel = myWheel
-		w.SetContent(ConnectedPage(dev))
+		setWindowTitle(w, dev)
+		w.SetContent(ConnectedPage(dev, func() {
+			setWindowTitle(w, dev)
+		}))
 	} else {
+		w.SetTitle(BaseWindowTitle)
 		w.SetContent(WaitingPage())
 	}
 
@@ -34,7 +38,10 @@ func NewUI(w fyne.Window, dev *device.Device) {
 					dev.Wheel = myWheel
 
 					fyne.Do(func() {
-						w.SetContent(ConnectedPage(dev))
+						setWindowTitle(w, dev)
+						w.SetContent(ConnectedPage(dev, func() {
+							setWindowTitle(w, dev)
+						}))
 					})
 				}
 			} else {
@@ -42,6 +49,7 @@ func NewUI(w fyne.Window, dev *device.Device) {
 					dev.Connected = false
 					dev.Wheel = nil
 					fyne.Do(func() {
+						w.SetTitle(BaseWindowTitle)
 						w.SetContent(WaitingPage())
 					})
 				}
