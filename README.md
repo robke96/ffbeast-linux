@@ -1,8 +1,6 @@
 # ffbeast-linux
 
 Linux version of the FFBeast wheel configuration tool. Rewritten to work natively on Linux.
-> [!NOTE]  
-> This version currently includes only basic functions. PRO features are not implemented yet.
 
 <img width="300" height="506" alt="app" src="https://github.com/user-attachments/assets/8e90d503-3f18-4e4f-9190-e14da16859f4" />
 
